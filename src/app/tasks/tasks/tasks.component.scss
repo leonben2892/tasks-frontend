@@ -1,0 +1,118 @@
+@mixin cardActionBtn {
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.container {
+  margin-top: 4rem;
+}
+
+.nav-link {
+  cursor: pointer;
+}
+
+input,
+select {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+/* Block */
+.createTaskBtn {
+  padding: 0.5rem 1rem;
+  color: white;
+  background-color: #01509f;
+  width: 150px;
+  border-radius: 50px;
+  margin-bottom: 1.2rem;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #00468b;
+  }
+}
+
+/* Block */
+.taskCard {
+  padding: 2rem 0;
+  margin-bottom: 1.5rem;
+  background-color: rgb(240, 240, 240);
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+
+  /* Elements */
+  &__header {
+    margin-bottom: 1rem;
+  }
+
+  &__description {
+    margin-top: 1rem;
+  }
+
+  &__viewCardLink {
+    display: block;
+  }
+
+  &__deleteBtn {
+    @include cardActionBtn();
+    background-color: #dc3545;
+  }
+
+  &__editBtn {
+    @include cardActionBtn();
+    background-color: #28a745;
+  }
+}
+
+/* Block */
+.taskForm {
+  padding: 2rem;
+
+  &__inputContainer {
+    position: relative;
+    margin-bottom: 3rem;
+
+    input {
+      position: relative;
+      border: none;
+      border-bottom: 1px solid #ddd;
+      background-color: transparent;
+      width: 100%;
+      z-index: 1;
+      display: block;
+
+      &:focus, &:valid {
+        outline: none;
+
+        & + label {
+          top: -10px;
+          font-size: 12px;
+          color: #01509f;
+        }
+      }
+    }
+
+    label {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      transition: 0.25s ease;
+    }
+  }
+
+  select {
+    box-shadow: none;
+  }
+}
+
+

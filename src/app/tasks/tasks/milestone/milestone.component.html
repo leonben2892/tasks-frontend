@@ -1,0 +1,73 @@
+<section>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-6 co-lg-4 text-center">
+        <div *ngIf="(task$ | async) as task">
+          <h1 class="mb-3">{{ task.subject }}</h1>
+          <img src="{{ task.image }}" alt="task image" width="300px" height="auto" class="img-thumbnail mb-4">
+          <button class="btn mx-auto addMilestoneBtn" (click)="toggleFormMode('create')" data-toggle="modal" data-target="#formModal">Add Milestone</button>
+        </div>
+
+        <div class="d-flex justify-content-center" *ngIf="milestones$ | async as milestones; else loading">
+          <ng-container *ngIf="milestones.length; else noItems">
+            <div>
+              <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let milestone of milestones">
+                        <td>{{ milestone.date | date: 'shortDate' }}</td>
+                        <td>{{ milestone.description }}</td>
+                        <td class="d-flex">
+                          <button (click)="onDeleteMilestone(milestone._id)" class="d-flex justify-content-center align-items-center deleteBtn mr-2"><img src="../../../assets/icon_trash.png" alt="trash icon" width="20px" height="20px"></button>
+                          <button (click)="toggleFormMode('update', milestone)" class="d-flex justify-content-center align-items-center editBtn ml-2" data-toggle="modal" data-target="#formModal"><img src="../../../assets/icon_pen.png" alt="pen icon" width="20px" height="20px"></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+          </ng-container>
+          <ng-template #noItems><h3>No milestones yet!</h3></ng-template>
+         </div>
+         <ng-template #loading><h3>Loading milestones...</h3></ng-template>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-------------------------->
+<!----------Modals---------->
+<!-------------------------->
+<!-- Form Modal -->
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="formModalLabel">
+          <span class="mr-1">{{ formMode === 'create' ? 'Create' : 'Edit' }}</span>Milestone
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="milestoneForm" (ngSubmit)="onSubmit()" class="milestoneForm">
+        <div class="modal-body">
+          <div class="milestoneForm__inputContainer">
+            <input type="text" formControlName="description" required/>
+            <label for="description">Description</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" [disabled]="this.loading$ | async" class="btn btn-success d-flex align-items-center"><span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" *ngIf="this.loading$ | async"></span>Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

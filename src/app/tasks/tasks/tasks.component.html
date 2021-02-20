@@ -1,0 +1,100 @@
+<section>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-8 col-md-6 col-lg-4 text-center">
+        <div>
+          <button class="createTaskBtn" (click)="onCreateTask()" data-toggle="modal" data-target="#formModal">Create Task</button>
+
+          <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'active': !IsOnCompleteDisplay}" (click)="switchTasks(false)">Not Completed</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'active': IsOnCompleteDisplay}" (click)="switchTasks(true)">Completed</a>
+            </li>
+          </ul>
+
+          <ng-container *ngIf="(tasks$ | async).length > 0; else noItems">
+            <div *ngFor='let task of tasks$ | async; let i = index'>
+              <div class="taskCard">
+                <h4 class="taskCard__header">{{ task.subject }}</h4>
+                <img src="{{ task.image }}" alt="Task Image" width="100%">
+                <p class="taskCard__description">{{ task.description }}</p>
+                <a class="taskCard__viewCardLink" [routerLink]="[task._id]">View Task</a>
+                <div class="d-flex justify-content-center mt-3">
+                  <button (click)="onDeleteTask(task._id)" class="d-flex justify-content-center align-items-center taskCard__deleteBtn mr-2"><img src="../../../assets/icon_trash.png" alt="trash icon" width="24px" height="24px"></button>
+                  <button (click)="onUpdateTask(task)" class="d-flex justify-content-center align-items-center taskCard__editBtn ml-2" data-toggle="modal" data-target="#formModal"><img src="../../../assets/icon_pen.png" alt="pen icon" width="24px" height="24px"></button>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #noItems><h3>You don't have tasks yet.</h3></ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-------------------------->
+<!----------Modals---------->
+<!-------------------------->
+<!-- Form Modal -->
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="formModalLabel">
+          <span class="mr-1">{{ formMode === 'create' ? 'Create' : 'Edit' }}</span>Task
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="taskForm">
+        <div class="modal-body">
+
+          <div class="taskForm__inputContainer">
+            <input type="text" formControlName="subject" required/>
+            <label for="subject">Subject</label>
+          </div>
+
+          <div class="taskForm__inputContainer">
+            <input type="text" formControlName="description" required/>
+            <label for="description">Description</label>
+          </div>
+
+          <div class="taskForm__inputContainer mb-4">
+            <input type="text" formControlName="image" required/>
+            <label for="image">Image URL</label>
+          </div>
+
+          <select class="form-control mb-3" formControlName="importance">
+            <option [value]="0" disabled hidden>Select task priority</option>
+            <option [value]="1">Low</option>
+            <option [value]="2">Medium</option>
+            <option [value]="3">High</option>
+          </select>
+
+
+          <div class="d-flex align-items-center" *ngIf="formMode === 'update'">
+            <h6 class="mb-0 mr-3">Task completed?</h6>
+            <label class="d-flex align-items-center mr-4 mb-0">
+              <input type="radio" [value]="true" formControlName="isCompleted" class="m-1">
+              <span>Yes</span>
+            </label>
+            <label class="d-flex align-items-center mb-0">
+              <input type="radio" [value]="false" formControlName="isCompleted" class="m-0 mr-1">
+              <span>No</span>
+            </label>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" [disabled]="this.loading$ | async" class="btn btn-success d-flex align-items-center"><span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" *ngIf="this.loading$ | async"></span>Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

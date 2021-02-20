@@ -1,0 +1,76 @@
+@mixin tableRowActionBtn {
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+}
+
+.row {
+  margin-top: 4rem;
+}
+
+.addMilestoneBtn {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: white;
+  background-color: #01509f;
+  width: 150px;
+  border-radius: 50px;
+  margin-bottom: 1.2rem;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #00468b;
+  }
+}
+
+/* Block */
+.milestoneForm {
+  padding: 2rem;
+
+  /* Elements */
+  &__inputContainer {
+    position: relative;
+    margin-bottom: 3rem;
+
+    input {
+      position: relative;
+      border: none;
+      border-bottom: 1px solid #ddd;
+      background-color: transparent;
+      width: 100%;
+      z-index: 1;
+      display: block;
+
+      &:focus, &:valid {
+        outline: none;
+
+        & + label {
+          top: -10px;
+          font-size: 12px;
+          color: #01509f;
+        }
+      }
+    }
+
+    label {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      transition: 0.25s ease;
+    }
+  }
+}
+
+.deleteBtn {
+  @include tableRowActionBtn();
+  background-color: #dc3545;
+}
+
+.editBtn {
+  @include tableRowActionBtn();
+  background-color: #28a745;
+}

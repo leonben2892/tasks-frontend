@@ -1,0 +1,72 @@
+<section>
+  <div class="container-fluid">
+    <div class="row pageContainer">
+      <!-- Side Form -->
+      <div class="col-12 col-lg-5 p-0">
+        <div class="d-flex justify-content-center align-items-center h-100 sideForm">
+          <div>
+            <h3 class="font-weight-bold sideForm__header mb-4">Welcome aboard!</h3>
+            <h5 class="sideForm__info mb-5">Tasks is a simple web application that lets you track your day to day tasks & milestones.</h5>
+            <div class="row">
+              <!-- State Management -->
+              <div class="col-12 col-xl-4 mb-4">
+                <div class="featureCard">
+                  <img src="../../../assets/icon_cog.png" alt="cogs icon" width="32px" height="32px" class="mb-3">
+                  <h6>State management using NgRx (reducers, actions, selectors, effects & data)</h6>
+                </div>
+              </div>
+              <!-- On push Change Detection -->
+              <div class="col-12 col-xl-4 mb-4">
+                <div class="featureCard">
+                  <img src="../../../assets/icon_change.png" alt="change icon" width="32px" height="32px" class="mb-3">
+                  <h6>"OnPush" change detection strategy to boost performance</h6>
+                </div>
+              </div>
+              <!-- TDD Approach -->
+              <div class="col-12 col-xl-4 mb-4">
+                <div class="featureCard">
+                  <img src="../../../assets/icon_test.png" alt="test icon" width="32px" height="32px" class="mb-3">
+                  <h6>Test-driven development approach</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="col-12 col-lg-7 text-center p-0">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100 form">
+          <h1 class="form__header">
+            <span *ngIf="!(IsCreatingUser$ | async)">Sign In</span>
+            <span *ngIf="(IsCreatingUser$ | async)">Sign Up</span>
+          </h1>
+
+          <form [formGroup]="authForm">
+            <div class="form__inputContainer">
+              <input type="email" formControlName="email" required email>
+              <label for="email">Email</label>
+            </div>
+            <div class="form__inputContainer">
+              <input type="password" formControlName="password" required>
+              <label for="password">Password</label>
+            </div>
+
+            <button (click)="auth()" [disabled]="authForm.valid === false || (IsAuthInProcess | async)" *ngIf="(IsCreatingUser$ | async)" class="d-flex justify-content-center align-items-center mx-auto form__submitBtn"><span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" *ngIf="IsAuthInProcess | async"></span>Sign Up</button>
+            <button (click)="auth()" [disabled]="authForm.valid === false || (IsAuthInProcess | async)" *ngIf="(IsLoggedOut$ | async) && !(IsCreatingUser$ | async)" class="d-flex justify-content-center align-items-center mx-auto form__submitBtn"><span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" *ngIf="IsAuthInProcess | async"></span>Sign In</button>
+
+            <h6 class="text-danger" *ngIf="IsSignInFailed | async">Incorrect username or password.</h6>
+            <h6 class="text-danger" *ngIf="IsSignUpFailed | async">User already exists!</h6>
+            <!-- <button (click)="logout()" *ngIf="(IsLoggedIn$  | async) && !(IsCreatingUser$ | async)">Logout</button> -->
+
+            <h6>
+              <div *ngIf="(IsCreatingUser$ | async)">Already have an account? <button class="btn form--stateBtn" (click)="toggleAuthState()">Sign In.</button></div>
+              <div *ngIf="!(IsCreatingUser$ | async)">Don't have an account? <button class="btn form--stateBtn" (click)="toggleAuthState()">Sign Up.</button></div>
+            </h6>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
